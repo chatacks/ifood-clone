@@ -1,9 +1,7 @@
+import Header from "./components/header";
+
 const Home = () => {
-  return (  
-    <div className="bg-red-500 py-5 mx-5">
-      <h1>hello Tailwind</h1>
-    </div>
-  );
-}
- 
+  return <Header />;
+};
+
 export default Home;
