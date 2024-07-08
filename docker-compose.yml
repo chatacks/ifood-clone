@@ -2,8 +2,8 @@ version: "3"
 
 services:
   postgres:
-    image: postgres:latest
-    container_name: ifood-clone-postgres
+    image: postgres:16
+    container_name: postgres-ifood-clone
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
