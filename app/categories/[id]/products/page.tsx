@@ -36,7 +36,7 @@ const CategoriesPage = async ({ params: { id } }: CategoriesPageProps) => {
       <Header />
       <div className="px-5 py-6">
         <h2 className="mb-6 text-lg font-semibold">{category.name}</h2>
-        <div className="flex grid w-full grid-cols-2 flex-col gap-6">
+        <div className="grid w-full grid-cols-2 flex-col gap-6">
           {category.Product.map((product) => (
             <ProductItem
               key={product.id}
