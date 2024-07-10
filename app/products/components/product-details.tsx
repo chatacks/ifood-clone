@@ -52,6 +52,7 @@ const ProductDetails = ({
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isConfirmationDialogOpen, setisConfirmationDialogOpen] =
     useState(false);
+
   const { addProductsToCart, products } = useContext(CartContext);
 
   const addToCart = ({ emptyCart }: { emptyCart?: boolean }) => {
@@ -150,13 +151,12 @@ const ProductDetails = ({
           <ProductList products={complementaryProducts} />
         </div>
 
-        <div className="px-5">
+        <div className="mt-7 px-5">
           <Button
+            className="w-full font-semibold"
             onClick={handleAddToCartClick}
-            size="default"
-            className="mt-6 w-full font-semibold"
           >
-            Adicionar ao carrinho
+            Adicionar à sacola
           </Button>
         </div>
       </div>
