@@ -8,6 +8,9 @@ import { ChevronRightIcon } from "lucide-react";
 import { Separator } from "../../components/ui/separator";
 import { formatCurrency } from "@/app/helpers/price";
 import Link from "next/link";
+import { useContext } from "react";
+import { CartContext } from "@/app/context/cart";
+import { useRouter } from "next/navigation";
 
 type OrderItemProps = {
   order: Prisma.OrderGetPayload<{
@@ -23,6 +26,9 @@ type OrderItemProps = {
 };
 
 const OrderItem = ({ order }: OrderItemProps) => {
+  const { addProductsToCart } = useContext(CartContext);
+  const router = useRouter();
+
   const getOrderStatusLabel = (status: OrderStatus) => {
     switch (status) {
       case "CANCELED":
@@ -38,6 +44,17 @@ const OrderItem = ({ order }: OrderItemProps) => {
       default:
         return "Desconhecido";
     }
+  };
+
+  const handleReDoOrderClick = () => {
+    for (const orderProduct of order.products) {
+      addProductsToCart({
+        product: { ...orderProduct.product, restaurant: order.restaurant },
+        quantity: orderProduct.quantity,
+      });
+    }
+
+    router.push(`/restaurants/${order.restautrantId}`);
   };
 
   return (
@@ -104,6 +121,7 @@ const OrderItem = ({ order }: OrderItemProps) => {
             className="text-xs text-primary"
             variant="ghost"
             disabled={order.status !== "COMPLETED"}
+            onClick={handleReDoOrderClick}
           >
             Refazer pedido
           </Button>
