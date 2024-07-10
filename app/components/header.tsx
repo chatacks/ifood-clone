@@ -25,24 +25,25 @@ import { Separator } from "./ui/separator";
 const Header = () => {
   const { data } = useSession();
 
-  const handleSignOut = () => signOut();
-  const handleSignIn = () => signIn();
+  const handleSignOutClick = () => signOut();
+  const handleSignInClick = () => signIn();
 
   return (
     <div className="flex justify-between px-5 pt-6">
-      <div className="relative h-[30px] w-[100px]">
-        <Link href="/">
+      <Link href="/">
+        <div className="relative h-[30px] w-[100px]">
           <Image
             src="/ifood-logo.svg"
             alt="iFood Logo"
             height={20}
             width={70}
+            className="object cover"
           />
-        </Link>
-      </div>
+        </div>
+      </Link>
 
       <Sheet>
-        <SheetTrigger>
+        <SheetTrigger asChild>
           <Button
             size="icon"
             variant="outline"
@@ -63,31 +64,32 @@ const Header = () => {
                 <div className="flex items-center gap-3">
                   <Avatar>
                     <AvatarImage
-                      src={data?.user.image as string | undefined}
-                      alt={data?.user.name as string | undefined}
+                      src={data?.user?.image as string | undefined}
                     />
                     <AvatarFallback>
-                      {data?.user.name?.split("")[0][0]}
-                      {data?.user.name?.split("")[1][0]}
+                      {data?.user?.name?.split(" ")[0][0]}
+                      {data?.user?.name?.split(" ")[1][0]}
                     </AvatarFallback>
                   </Avatar>
 
                   <div>
-                    <h3 className="font-semibold">{data.user.name}</h3>
+                    <h3 className="font-semibold">{data?.user?.name}</h3>
                     <span className="block text-xs text-muted-foreground">
-                      {data.user.email}
+                      {data?.user?.email}
                     </span>
                   </div>
                 </div>
               </div>
             </>
           ) : (
-            <div className="flex items-center justify-between pt-10">
-              <h2 className="font-semibold">Olá. Faça seu login!</h2>
-              <Button size="icon" onClick={handleSignIn}>
-                <LogInIcon size={20} />
-              </Button>
-            </div>
+            <>
+              <div className="flex items-center justify-between pt-10">
+                <h2 className="font-semibold">Olá. Faça seu login!</h2>
+                <Button size="icon" onClick={handleSignInClick}>
+                  <LogInIcon />
+                </Button>
+              </div>
+            </>
           )}
 
           <div className="py-6">
@@ -108,17 +110,23 @@ const Header = () => {
                 <Button
                   variant="ghost"
                   className="w-full justify-start space-x-3 rounded-full text-sm font-normal"
+                  asChild
                 >
-                  <ScrollTextIcon size={16} />
-                  <span className="block">Pedidos</span>
+                  <Link href="/my-orders">
+                    <ScrollTextIcon size={16} />
+                    <span className="block">Meus Pedidos</span>
+                  </Link>
                 </Button>
 
                 <Button
                   variant="ghost"
                   className="w-full justify-start space-x-3 rounded-full text-sm font-normal"
+                  asChild
                 >
-                  <HeartIcon size={16} />
-                  <span className="block">Restaurantes Favoritos</span>
+                  <Link href="/my-favorite-restaurants">
+                    <HeartIcon size={16} />
+                    <span className="block">Restaurantes Favoritos</span>
+                  </Link>
                 </Button>
               </>
             )}
@@ -132,7 +140,7 @@ const Header = () => {
             <Button
               variant="ghost"
               className="w-full justify-start space-x-3 rounded-full text-sm font-normal"
-              onClick={handleSignOut}
+              onClick={handleSignOutClick}
             >
               <LogOutIcon size={16} />
               <span className="block">Sair da conta</span>
