@@ -12,9 +12,9 @@ import {
   unfavoriteRestaurant,
 } from "../actions/restaurant";
 import { toast } from "sonner";
+import { useSession } from "next-auth/react";
 
 type RestaurantItemProps = {
-  userId?: string;
   restaurant: Restaurant;
   className?: string;
   userFavoriteRestaurants: UserFavoriteRestaurant[];
@@ -23,22 +23,23 @@ type RestaurantItemProps = {
 const RestaurantItem = ({
   restaurant,
   className,
-  userId,
   userFavoriteRestaurants,
 }: RestaurantItemProps) => {
   const isFavorite = userFavoriteRestaurants.some(
     (fav) => fav.restaurantId === restaurant.id,
   );
 
+  const { data } = useSession();
+
   const handleFavoriteClick = async () => {
-    if (!userId) return;
+    if (!data?.user.id) return;
     try {
       if (isFavorite) {
-        await unfavoriteRestaurant(userId, restaurant.id);
+        await unfavoriteRestaurant(data?.user.id, restaurant.id);
         return toast.success("Restaurante removido dos favoritos com sucesso!");
       }
 
-      await favoriteRestaurant(userId, restaurant.id);
+      await favoriteRestaurant(data?.user.id, restaurant.id);
       toast.success("Restaurante adicionado aos favoritos com sucesso!", {
         description:
           'Você pode ver os restaurantes favoritados em "Restaurantes Favoritos". ',
@@ -66,7 +67,7 @@ const RestaurantItem = ({
             <span className="text-xs font-semibold">5.0</span>
           </div>
 
-          {userId && (
+          {data?.user.id && (
             <Button
               size="icon"
               className={`absolute right-2 top-2 h-7 w-7 rounded-full bg-gray-700 ${isFavorite && "bg-primary hover:bg-gray-700"}`}
