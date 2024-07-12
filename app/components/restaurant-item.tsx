@@ -13,7 +13,7 @@ import useToggleFavoriteRestaurant from "../hooks/use-toggle-favorite-restaurant
 type RestaurantItemProps = {
   restaurant: Restaurant;
   className?: string;
-  userFavoriteRestaurants: UserFavoriteRestaurant[];
+  userFavoriteRestaurants?: UserFavoriteRestaurant[];
 };
 
 const RestaurantItem = ({
@@ -21,17 +21,20 @@ const RestaurantItem = ({
   className,
   userFavoriteRestaurants,
 }: RestaurantItemProps) => {
-  const isFavorite = userFavoriteRestaurants.some(
-    (fav) => fav.restaurantId === restaurant.id,
-  );
-
   const { data } = useSession();
+
+  const isFavorite =
+    userFavoriteRestaurants?.some(
+      (fav) => fav.restaurantId === restaurant.id,
+    ) ?? false;
 
   const { handleFavoriteClick } = useToggleFavoriteRestaurant({
     restaurantId: restaurant.id,
     userId: data?.user.id,
     restaurantIsCurrentlyFavorite: isFavorite,
   });
+
+  if (!userFavoriteRestaurants) return;
 
   return (
     <div className={cn("min-w-[266px] max-w-[266px]", className)}>
