@@ -1,17 +1,34 @@
 "use client";
 
 import { Button } from "@/app/components/ui/button";
-import { Restaurant } from "@prisma/client";
+import useToggleFavoriteRestaurant from "@/app/hooks/use-toggle-favorite-restaurant";
+import { Restaurant, UserFavoriteRestaurant } from "@prisma/client";
 import { ChevronLeftIcon, HeartIcon } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 type RestaurantImageProps = {
-  restaurant: Pick<Restaurant, "imageUrl" | "name">;
+  restaurant: Pick<Restaurant, "id" | "imageUrl" | "name">;
+  userFavoriteRestaurants: UserFavoriteRestaurant[];
 };
 
-const RestaurantImage = ({ restaurant }: RestaurantImageProps) => {
+const RestaurantImage = ({
+  restaurant,
+  userFavoriteRestaurants,
+}: RestaurantImageProps) => {
+  const { data } = useSession();
   const router = useRouter();
+
+  const isFavorite = userFavoriteRestaurants.some(
+    (fav) => fav.restaurantId === restaurant.id,
+  );
+
+  const { handleFavoriteClick } = useToggleFavoriteRestaurant({
+    restaurantId: restaurant.id,
+    userId: data?.user.id,
+    restaurantIsCurrentlyFavorite: isFavorite,
+  });
 
   const handleBackClick = () => router.back();
 
@@ -25,7 +42,9 @@ const RestaurantImage = ({ restaurant }: RestaurantImageProps) => {
       />
 
       <Button
-        className="absolute left-4 top-4 rounded-full bg-white text-foreground hover:text-white"
+        className={
+          "absolute left-4 top-4 rounded-full bg-white text-foreground hover:text-white"
+        }
         size="icon"
         onClick={handleBackClick}
       >
@@ -34,7 +53,8 @@ const RestaurantImage = ({ restaurant }: RestaurantImageProps) => {
 
       <Button
         size="icon"
-        className="absolute right-4 top-4 rounded-full bg-gray-700"
+        className={`absolute right-4 top-4 rounded-full bg-gray-700 ${isFavorite && "bg-primary hover:bg-gray-700"}`}
+        onClick={handleFavoriteClick}
       >
         <HeartIcon size={20} className="fill-white" />
       </Button>
