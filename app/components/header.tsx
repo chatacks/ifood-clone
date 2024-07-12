@@ -29,11 +29,11 @@ const Header = () => {
   const handleSignInClick = () => signIn();
 
   return (
-    <div className="flex justify-between px-5 pt-6">
+    <div className="flex items-center justify-between px-5 pt-6">
       <Link href="/">
-        <div className="relative h-[30px] w-[100px]">
+        <div className="">
           <Image
-            src="/ifood-logo.svg"
+            src="/tcfood-logo.svg"
             alt="iFood Logo"
             height={20}
             width={70}
