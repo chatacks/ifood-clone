@@ -1,4 +1,4 @@
-# iFood Clone
+# TC Food
 
 Este é um projeto de clone do iFood desenvolvido utilizando as seguintes tecnologias:
 - [Next.js 14](https://nextjs.org/)
@@ -27,8 +27,8 @@ Siga as etapas abaixo para configurar e executar o projeto localmente.
 
 ### 1. Clone o repositório
 
-- git clone https://github.com/seu-usuario/seu-repositorio.git
-- cd seu-repositorio
+- git clone git@github.com:chatacks/tc-foods.git
+- cd tc-foods
 
 ## 2. Instale as dependências
 - npm install
